@@ -52,9 +52,12 @@ namespace Catalog.Api.Repositories
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryName)
         {
+            // FilterDefinition<Product> filter = Builders<Product>
+            //                                     .Filter
+            //                                     .ElemMatch(p => p.Category, categoryName);
             FilterDefinition<Product> filter = Builders<Product>
                                                 .Filter
-                                                .ElemMatch(p => p.Category, categoryName);
+                                                .Eq(p => p.Category, categoryName);
 
             return await _context
                         .Products

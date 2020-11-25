@@ -8,6 +8,8 @@ namespace Catalog.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
+    using Repositories;
+    using Repositories.Interfaces;
     using Settings;
 
     public class Startup
@@ -34,6 +36,7 @@ namespace Catalog.Api
                 );
 
             services.AddTransient<ICatalogContext, CatalogContext>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
         }
 
