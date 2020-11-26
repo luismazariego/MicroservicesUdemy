@@ -8,6 +8,7 @@ namespace Catalog.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
+    using Microsoft.OpenApi.Models;
     using Repositories;
     using Repositories.Interfaces;
     using Settings;
@@ -38,6 +39,11 @@ namespace Catalog.Api
             services.AddTransient<ICatalogContext, CatalogContext>();
             services.AddTransient<IProductRepository, ProductRepository>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog API", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +63,12 @@ namespace Catalog.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API V1");
             });
         }
     }
