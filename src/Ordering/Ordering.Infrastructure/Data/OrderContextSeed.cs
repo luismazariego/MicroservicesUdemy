@@ -22,7 +22,7 @@
             {
                 orderContext.Database.Migrate();
 
-                if (orderContext.Orders.Any())
+                if (!orderContext.Orders.Any())
                 {
                     orderContext.Orders.AddRange(GetPreconfiguredOrders());
                     await orderContext.SaveChangesAsync();

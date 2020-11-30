@@ -1,6 +1,7 @@
 namespace Ordering.Api
 {
     using System;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
@@ -11,10 +12,10 @@ namespace Ordering.Api
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            CreateAndSeedDatabase(host);
+            await CreateAndSeedDatabase(host);
             host.Run();
         }
 
@@ -25,7 +26,7 @@ namespace Ordering.Api
                     webBuilder.UseStartup<Startup>();
                 });
 
-        private static void CreateAndSeedDatabase(IHost host)
+        private static async Task CreateAndSeedDatabase(IHost host)
         {
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
@@ -33,12 +34,12 @@ namespace Ordering.Api
             try
             {
                 var orderContext = services.GetRequiredService<OrderContext>();
-                OrderContextSeed.SeedAsync(orderContext, loggerFactory);
+                await OrderContextSeed.SeedAsync(orderContext, loggerFactory);
             }
             catch (Exception e)
             {
                 var logger = loggerFactory.CreateLogger<Program>();
-                logger.LogError(e.Message)                
+                logger.LogError(e.Message);                
             }
         }
     }
